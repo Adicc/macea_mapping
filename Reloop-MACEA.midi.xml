@@ -11,373 +11,373 @@
 
         <controls> <!-- One control group -->
 
-            <!-- T1 = -->
+            <!-- T1 = Pitch Bend – Button -->
             <control>
                 <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
                 <options>
                     <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
                 </options>
             </control>
 
-            <!-- T2 = -->
+            <!-- T2 = Pitch Bend + Button -->
             <control>
                 <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
                 <options>
                     <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
                 </options>
             </control>
-            
-            <!-- T3 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T4 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T5 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T6 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T7 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T8 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T9 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T10 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T11 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T12 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T13 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T14 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T15 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T16 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T17 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T18 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T19 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T20 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T21 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T22 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T23 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T24 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T25 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T26 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T27 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T28 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T29 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T30 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T31 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T32 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
-            <!-- T33 = -->
-            <control>
-                <group>[Master]</group>
-                <key>crossfader</key>
-                <status>0xB0</status> <!-- CC on channel 1 -->
-                <midino>0x07</midino>
-                <options>
-                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
-                </options>
-            </control>
-            
 
-            
+            <!-- T3 = Shift Button -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T4 = Autoloop Button (Shift: Loop In) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T5 =  Loop Length -/+ (Shift: Beat Move > only Traktor Pro) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T6 = Gain Dial  -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T7 = Pitchfader incl. Status LED Indicator (illuminated at 0%) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T8 = Reloop Button (Shift: Loop Out) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T9 = FX Select Button (Shift: Master Deck Assignment) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T10 = FX -Dry/Wet + Dial (Shift: Pan Balance Dial) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T11 = Amount (FX Parameter 1) Dial (Shift: Filter) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T12 = FX On Button (Shift: Keylock Button) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T13 = Search Mode Button -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T14 = Scratch Mode Button -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T15 = Jog Wheel -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T16 = Sync Button (Shift: Cue 1 > only Traktor Pro) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T17 = CUP Button (Shift: Cue 2 > only Traktor Pro) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T18 = CUE Button (Shift: Cue 3 > only Traktor Pro) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T19 = Play/Pause Button (Shift: Cue 4 > only Traktor Pro) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T20 = TRAX Encoder (Shift: Folder Navigation) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T21 = Track Load Button (Shift: Open Folder [L], Close Folder [R]) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T22 = High (Highs EQ) Dial -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T23 = Mid (Mids EQ) Dial -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T24 = Low (Bass EQ) Dial -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T25 = Cue Button (Shift: Track Pre-Listen Play [L] / Stop [R]) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T26 = Linefader -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T27 = Master Volume Dial (analog, not software) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T28 = Phones Volume Dial (analog, not software) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T29 = Cue Mix Fader -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T30 = Power Status LED (illuminated when controller is turned on, if voltage is provided) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T31 = MIDI Status LED (illuminated when transferring MIDI signal) -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T32 = Master Level LED Indicator -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T33 =  Crossfader  -->
+            <control>
+                <group>[Master]</group>
+                <key></key>
+                <status></status> <!-- CC on channel 1 -->
+                <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
 
 
+
+
+           
         </controls>
 
 
