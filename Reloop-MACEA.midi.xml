@@ -122,12 +122,24 @@
                 </options>
             </control>
 
-            <!-- T10 = FX -Dry/Wet + Dial (Shift: Pan Balance Dial) -->
+            <!-- T10 = FX -Dry/Wet + Dial -->
             <control>
                 <group>[Master]</group>
                 <key></key>
                 <status></status> <!-- CC on channel 1 -->
                 <midino></midino>
+                <options>
+                    <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
+                </options>
+            </control>
+
+            <!-- T10 + Shift = Pan Balance Dial -->
+            <!-- To do: This may not work. Read the manual for further info: https://manual.mixxx.org/2.4/de/chapters/appendix/mixxx_controls.html -->
+            <control>
+                <group>[Master]</group>
+                <key>balance</key>
+                <status>0xB1</status> <!-- CC on channel 1 -->
+                <midino>0x60</midino>
                 <options>
                     <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
                 </options>
