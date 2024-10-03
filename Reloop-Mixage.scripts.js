@@ -2,96 +2,96 @@
 // Author: HorstBaerbel / gqzomer
 // Version: 1.1.2 requires Mixxx 2.4 or higher
 
-var MACEA = {};
+var Mixage = {};
 
 // ----- User-configurable settings -----
-MACEA.scratchByWheelTouch = false; // Set to true to scratch by touching the jog wheel instead of having to toggle the disc button. Default is false
-MACEA.scratchTicksPerRevolution = 620; // Number of jog wheel ticks that make a full revolution when scratching. Reduce to "scratch more" of the track, increase to "scratch less". Default is 620 (measured)
-MACEA.jogWheelScrollSpeed = 1.0; // Scroll speed when the jog wheel is used to scroll through the track. The higher, the faster. Default is 1.0
+Mixage.scratchByWheelTouch = false; // Set to true to scratch by touching the jog wheel instead of having to toggle the disc button. Default is false
+Mixage.scratchTicksPerRevolution = 620; // Number of jog wheel ticks that make a full revolution when scratching. Reduce to "scratch more" of the track, increase to "scratch less". Default is 620 (measured)
+Mixage.jogWheelScrollSpeed = 1.0; // Scroll speed when the jog wheel is used to scroll through the track. The higher, the faster. Default is 1.0
 
 // ----- Internal variables (don't touch) -----
 
 // engine connections
-MACEA.vuMeterConnection = [];
-MACEA.loopConnection = [];
-MACEA.fxOnConnection = [];
-MACEA.fxSelectConnection = [];
+Mixage.vuMeterConnection = [];
+Mixage.loopConnection = [];
+Mixage.fxOnConnection = [];
+Mixage.fxSelectConnection = [];
 
 // timers
-MACEA.traxxPressTimer = 0;
-MACEA.loopLengthPressTimer = 0;
-MACEA.dryWetPressTimer = 0;
-MACEA.scratchTogglePressTimer = 0;
+Mixage.traxxPressTimer = 0;
+Mixage.loopLengthPressTimer = 0;
+Mixage.dryWetPressTimer = 0;
+Mixage.scratchTogglePressTimer = 0;
 
 // constants
-MACEA.numEffectUnits = 4;
-MACEA.numEffectSlots = 3;
+Mixage.numEffectUnits = 4;
+Mixage.numEffectSlots = 3;
 var ON = 0x7F, OFF = 0x00, DOWN = 0x7F;
 var QUICK_PRESS = 1, DOUBLE_PRESS = 2;
 
 // these objects store the state of different buttons and modes
-MACEA.channels = [
+Mixage.channels = [
     "[Channel1]",
     "[Channel2]",
 ];
 
-MACEA.scratchToggleState = {
+Mixage.scratchToggleState = {
     "[Channel1]": false,
     "[Channel2]": false,
 };
 
-MACEA.scrollToggleState = {
+Mixage.scrollToggleState = {
     "[Channel1]": false,
     "[Channel2]": false,
 };
 
-MACEA.wheelTouched = {
+Mixage.wheelTouched = {
     "[Channel1]": false,
     "[Channel2]": false,
 };
 
-MACEA.loopLengthPressed = {
+Mixage.loopLengthPressed = {
     "[Channel1]": false,
     "[Channel2]": false,
 };
 
-MACEA.dryWetPressed = {
+Mixage.dryWetPressed = {
     "[Channel1]": false,
     "[Channel2]": false,
 };
 
-MACEA.scratchPressed = {
+Mixage.scratchPressed = {
     "[Channel1]": false,
     "[Channel2]": false,
 };
 
-MACEA.adjustLoop = {
+Mixage.adjustLoop = {
     "[Channel1]": false,
     "[Channel2]": false,
 };
 
-MACEA.adjustLoopIn = {
+Mixage.adjustLoopIn = {
     "[Channel1]": false,
     "[Channel2]": false,
 };
 
-MACEA.adjustLoopOut = {
+Mixage.adjustLoopOut = {
     "[Channel1]": false,
     "[Channel2]": false,
 };
 
-MACEA.effectSlotState = {
-    "[EffectRack1_EffectUnit1]": new Array(MACEA.numEffectSlots).fill(1),
-    "[EffectRack1_EffectUnit2]": new Array(MACEA.numEffectSlots).fill(1),
+Mixage.effectSlotState = {
+    "[EffectRack1_EffectUnit1]": new Array(Mixage.numEffectSlots).fill(1),
+    "[EffectRack1_EffectUnit2]": new Array(Mixage.numEffectSlots).fill(1),
 };
 
-MACEA.blinkTimer = {
+Mixage.blinkTimer = {
     "[Channel1]": {},
     "[Channel2]": {},
 };
 
 // Maps channels and their controls to a MIDI control number to toggle their LEDs
-MACEA.ledMap = {
+Mixage.ledMap = {
     "[Channel1]": {
         "cue_indicator": 0x0A,
         "cue_default": 0x0B,
@@ -125,32 +125,32 @@ MACEA.ledMap = {
 };
 
 // Maps mixxx controls to a function that toggles their LEDs
-MACEA.connectionMap = {
-    "cue_indicator": {"function": function(v, g, c) { MACEA.toggleLED(v, g, c); }},
-    "cue_default": {"function": function(v, g, c) { MACEA.toggleLED(v, g, c); }},
-    "play_indicator": {"function": function(v, g, c) { MACEA.toggleLED(v, g, c); MACEA.toggleLED(v, g, "load_indicator"); }},
-    "pfl": {"function": function(v, g, c) { MACEA.toggleLED(v, g, c); }},
-    "loop_enabled": {"function": function(_v, g) { MACEA.toggleReloopLED(g); }},
-    "loop_in": {"function": function(v, g) { if (v === 1) { MACEA.toggleLoopLED(g); } }},
-    "loop_out": {"function": function(v, g) { if (v === 1) { MACEA.toggleLoopLED(g); } }},
-    "sync_enabled": {"function": function(v, g, c) { MACEA.toggleLED(v, g, c); }},
-    "eject": {"function": function(_v, g) { MACEA.eject(g); }},
+Mixage.connectionMap = {
+    "cue_indicator": {"function": function(v, g, c) { Mixage.toggleLED(v, g, c); }},
+    "cue_default": {"function": function(v, g, c) { Mixage.toggleLED(v, g, c); }},
+    "play_indicator": {"function": function(v, g, c) { Mixage.toggleLED(v, g, c); Mixage.toggleLED(v, g, "load_indicator"); }},
+    "pfl": {"function": function(v, g, c) { Mixage.toggleLED(v, g, c); }},
+    "loop_enabled": {"function": function(_v, g) { Mixage.toggleReloopLED(g); }},
+    "loop_in": {"function": function(v, g) { if (v === 1) { Mixage.toggleLoopLED(g); } }},
+    "loop_out": {"function": function(v, g) { if (v === 1) { Mixage.toggleLoopLED(g); } }},
+    "sync_enabled": {"function": function(v, g, c) { Mixage.toggleLED(v, g, c); }},
+    "eject": {"function": function(_v, g) { Mixage.eject(g); }},
 };
 
 // ----- Internal variables functions -----
 
 // Set or remove functions to call when the state of a mixxx control changes
-MACEA.connectControlsToFunctions = function(group, remove) {
-    for (var control in MACEA.connectionMap) {
+Mixage.connectControlsToFunctions = function(group, remove) {
+    for (var control in Mixage.connectionMap) {
         if (remove !== undefined) {
-            MACEA.connectionMap[control][group].disconnect();
+            Mixage.connectionMap[control][group].disconnect();
         } else {
-            MACEA.connectionMap[control][group] = engine.makeConnection(group, control, MACEA.connectionMap[control].function);
+            Mixage.connectionMap[control][group] = engine.makeConnection(group, control, Mixage.connectionMap[control].function);
         }
     }
 };
 
-MACEA.init = function(_id, _debugging) {
+Mixage.init = function(_id, _debugging) {
 
     // all button LEDs off
     for (var i = 0; i < 255; i++) {
@@ -159,20 +159,20 @@ MACEA.init = function(_id, _debugging) {
 
     // find controls and make engine connections for each channel in Mixage.channels
     // A predefined list with channels is used instead of a for loop to prevent engine connections to be overwritten
-    MACEA.channels.forEach(function(channel) {
+    Mixage.channels.forEach(function(channel) {
         var deck = script.deckFromGroup(channel);
-        MACEA.connectControlsToFunctions(channel);
+        Mixage.connectControlsToFunctions(channel);
 
         // set soft takeovers for effectslot amount
-        for (var effectSlot = 1; effectSlot <= MACEA.numEffectSlots; effectSlot++) {
+        for (var effectSlot = 1; effectSlot <= Mixage.numEffectSlots; effectSlot++) {
             var groupString = "[EffectRack1_EffectUnit"+ deck +"_Effect" + effectSlot + "]";
             engine.softTakeover(groupString, "meta", true);
         }
 
-        for (var effectUnit = 1; effectUnit <= MACEA.numEffectUnits; effectUnit++) {
+        for (var effectUnit = 1; effectUnit <= Mixage.numEffectUnits; effectUnit++) {
             // make connections for the fx on LEDs
             var fxGroup = "group_"+channel+"_enable";
-            MACEA.fxOnConnection.push(engine.makeConnection("[EffectRack1_EffectUnit"+effectUnit+"]", fxGroup, function() { MACEA.toggleFxLED(channel); }));
+            Mixage.fxOnConnection.push(engine.makeConnection("[EffectRack1_EffectUnit"+effectUnit+"]", fxGroup, function() { Mixage.toggleFxLED(channel); }));
 
             // set soft takeovers for effectunit meta
             engine.softTakeover("[EffectRack1_EffectUnit"+effectUnit+"]", "super1", true);
@@ -183,26 +183,26 @@ MACEA.init = function(_id, _debugging) {
         engine.softTakeover("[QuickEffectRack1_"+channel+"]", "super1", true);
 
         // make connections for status LEDs
-        MACEA.vuMeterConnection.push(engine.makeConnection(channel, "vu_meter", function(val) { midi.sendShortMsg(0x90, MACEA.ledMap[channel].vu_meter, val * 7); }));
-        MACEA.loopConnection.push(engine.makeConnection(channel, "track_loaded", function() { MACEA.toggleReloopLED(channel); }));
-        MACEA.fxSelectConnection.push(engine.makeConnection("[EffectRack1_EffectUnit"+deck+"]", "focused_effect", function(value) { MACEA.handleFxSelect(value, channel); }));
+        Mixage.vuMeterConnection.push(engine.makeConnection(channel, "vu_meter", function(val) { midi.sendShortMsg(0x90, Mixage.ledMap[channel].vu_meter, val * 7); }));
+        Mixage.loopConnection.push(engine.makeConnection(channel, "track_loaded", function() { Mixage.toggleReloopLED(channel); }));
+        Mixage.fxSelectConnection.push(engine.makeConnection("[EffectRack1_EffectUnit"+deck+"]", "focused_effect", function(value) { Mixage.handleFxSelect(value, channel); }));
 
         // get current status and set LEDs accordingly
-        MACEA.toggleFxLED(channel);
-        MACEA.handleFxSelect(engine.getValue("[EffectRack1_EffectUnit"+deck+"]", "focused_effect"), channel);
+        Mixage.toggleFxLED(channel);
+        Mixage.handleFxSelect(engine.getValue("[EffectRack1_EffectUnit"+deck+"]", "focused_effect"), channel);
     });
 };
 
-MACEA.shutdown = function() {
+Mixage.shutdown = function() {
 
     // Disconnect all engine connections that are present
-    MACEA.vuMeterConnection.forEach(function(connection) { connection.disconnect(); });
-    MACEA.loopConnection.forEach(function(connection) { connection.disconnect(); });
-    MACEA.fxSelectConnection.forEach(function(connection) { connection.disconnect(); });
-    MACEA.fxOnConnection.forEach(function(connection) { connection.disconnect(); });
+    Mixage.vuMeterConnection.forEach(function(connection) { connection.disconnect(); });
+    Mixage.loopConnection.forEach(function(connection) { connection.disconnect(); });
+    Mixage.fxSelectConnection.forEach(function(connection) { connection.disconnect(); });
+    Mixage.fxOnConnection.forEach(function(connection) { connection.disconnect(); });
 
     // Disconnect all controls from functions
-    MACEA.channels.forEach(function(channel) { MACEA.connectControlsToFunctions(channel, true); });
+    Mixage.channels.forEach(function(channel) { Mixage.connectControlsToFunctions(channel, true); });
 
     // all button LEDs off
     for (var i = 0; i < 255; i++) {
@@ -211,178 +211,178 @@ MACEA.shutdown = function() {
 };
 
 // Toggle the LED on the MIDI controller by sending a MIDI message
-MACEA.toggleLED = function(value, group, control) {
-    midi.sendShortMsg(0x90, MACEA.ledMap[group][control], value ? 0x7F : 0);
+Mixage.toggleLED = function(value, group, control) {
+    midi.sendShortMsg(0x90, Mixage.ledMap[group][control], value ? 0x7F : 0);
 };
 
 // Toggles the FX On LED / Off when no effect unit is activated for a channel / On when any effect unit is active for a channel
-MACEA.toggleFxLED = function(group) {
+Mixage.toggleFxLED = function(group) {
     var fxChannel = "group_" + group + "_enable";
     var enabledFxGroups = [];
 
-    for (var i = 1; i <= MACEA.numEffectUnits; i++) {
+    for (var i = 1; i <= Mixage.numEffectUnits; i++) {
         enabledFxGroups.push(engine.getValue("[EffectRack1_EffectUnit" + i + "]", fxChannel));
     }
 
     if (enabledFxGroups.indexOf(1) !== -1) {
-        MACEA.toggleLED(ON, group, "fx_on");
+        Mixage.toggleLED(ON, group, "fx_on");
     } else {
-        MACEA.toggleLED(OFF, group, "fx_on");
+        Mixage.toggleLED(OFF, group, "fx_on");
     }
 };
 
 // Flash the Reloop LED if a loop is set but currently not active
-MACEA.toggleReloopLED = function(group) {
+Mixage.toggleReloopLED = function(group) {
     if (engine.getValue(group, "loop_enabled") === 0) {
-        MACEA.toggleLED(OFF, group, "loop");
-        MACEA.toggleLED(OFF, group, "reloop");
+        Mixage.toggleLED(OFF, group, "loop");
+        Mixage.toggleLED(OFF, group, "reloop");
 
         if (engine.getValue(group, "loop_start_position") !== -1 && engine.getValue(group, "loop_end_position") !== -1) {
-            MACEA.blinkLED(MACEA.ledMap[group].reloop, group, 1000);
+            Mixage.blinkLED(Mixage.ledMap[group].reloop, group, 1000);
         } else {
-            MACEA.blinkLED(MACEA.ledMap[group].reloop, group, 0);
+            Mixage.blinkLED(Mixage.ledMap[group].reloop, group, 0);
         }
     } else {
-        MACEA.blinkLED(MACEA.ledMap[group].reloop, group, 0);
-        MACEA.toggleLoopLED(group);
+        Mixage.blinkLED(Mixage.ledMap[group].reloop, group, 0);
+        Mixage.toggleLoopLED(group);
     }
 };
 
 // Turns the loop in and loop LEDs on if a loop end or start position is found, otherwise turn them off
-MACEA.toggleLoopLED = function(group) {
+Mixage.toggleLoopLED = function(group) {
     if (engine.getValue(group, "loop_start_position") !== -1) {
-        MACEA.toggleLED(ON, group, "loop");
+        Mixage.toggleLED(ON, group, "loop");
     } else {
-        MACEA.toggleLED(OFF, group, "loop");
+        Mixage.toggleLED(OFF, group, "loop");
     }
 
     if (engine.getValue(group, "loop_end_position") !== -1) {
-        MACEA.toggleLED(ON, group, "reloop");
+        Mixage.toggleLED(ON, group, "reloop");
     } else {
-        MACEA.toggleLED(OFF, group, "reloop");
+        Mixage.toggleLED(OFF, group, "reloop");
     }
 };
 
 // resets the loop LEDs when a track is ejected
-MACEA.eject = function(group) {
+Mixage.eject = function(group) {
     if (engine.getValue(group, "play") === 0) {
-        if (MACEA.adjustLoop[group]) {
-            MACEA.stopLoopAdjust();
+        if (Mixage.adjustLoop[group]) {
+            Mixage.stopLoopAdjust();
         } else {
-            MACEA.blinkLED(MACEA.ledMap[group].reloop, group, 0);
-            MACEA.toggleLED(OFF, group, "loop");
+            Mixage.blinkLED(Mixage.ledMap[group].reloop, group, 0);
+            Mixage.toggleLED(OFF, group, "loop");
         }
     }
 };
 
 // Removes any loop that is currently set on a track
-MACEA.clearLoop = function(_channel, _control, _value, _status, group) {
+Mixage.clearLoop = function(_channel, _control, _value, _status, group) {
     engine.setValue(group, "loop_end_position", -1);
     engine.setValue(group, "loop_start_position", -1);
 };
 
 // Enable the adjustment of the loop end or start position with the jogwheel
-MACEA.startLoopAdjust = function(group, adjustpoint) {
+Mixage.startLoopAdjust = function(group, adjustpoint) {
 
     // enable adjustment of the loop in point
     if (adjustpoint === "start" || adjustpoint === undefined) {
-        MACEA.adjustLoopIn[group] = true;
-        MACEA.blinkLED(MACEA.ledMap[group].loop, group, 250);
+        Mixage.adjustLoopIn[group] = true;
+        Mixage.blinkLED(Mixage.ledMap[group].loop, group, 250);
 
-        if (MACEA.adjustLoopOut[group] && adjustpoint === "start") {
-            MACEA.adjustLoopOut[group] = false;
-            MACEA.blinkLED(MACEA.ledMap[group].reloop, group, 0);
-            MACEA.toggleLED(ON, group, "reloop");
+        if (Mixage.adjustLoopOut[group] && adjustpoint === "start") {
+            Mixage.adjustLoopOut[group] = false;
+            Mixage.blinkLED(Mixage.ledMap[group].reloop, group, 0);
+            Mixage.toggleLED(ON, group, "reloop");
         }
     }
 
     // enable adjustment of the loop out point
     if (adjustpoint === "end" || adjustpoint === undefined) {
-        MACEA.adjustLoopOut[group] = true;
-        MACEA.blinkLED(MACEA.ledMap[group].reloop, group, 250);
+        Mixage.adjustLoopOut[group] = true;
+        Mixage.blinkLED(Mixage.ledMap[group].reloop, group, 250);
 
-        if (MACEA.adjustLoopIn[group] && adjustpoint === "end") {
-            MACEA.adjustLoopIn[group] = false;
-            MACEA.blinkLED(MACEA.ledMap[group].loop, group, 0);
-            MACEA.toggleLED(ON, group, "loop");
+        if (Mixage.adjustLoopIn[group] && adjustpoint === "end") {
+            Mixage.adjustLoopIn[group] = false;
+            Mixage.blinkLED(Mixage.ledMap[group].loop, group, 0);
+            Mixage.toggleLED(ON, group, "loop");
         }
     }
 
     // disable scratch mode if active
-    if (MACEA.scratchToggleState[group]) {
-        MACEA.toggleLED(OFF, group, "scratch_active");
-        MACEA.scratchToggleState[group] = false;
+    if (Mixage.scratchToggleState[group]) {
+        Mixage.toggleLED(OFF, group, "scratch_active");
+        Mixage.scratchToggleState[group] = false;
     }
 
     // disable scroll mode if active
-    if (MACEA.scrollToggleState[group]) {
-        MACEA.toggleLED(OFF, group, "scroll_active");
-        MACEA.scrollToggleState[group] = false;
+    if (Mixage.scrollToggleState[group]) {
+        Mixage.toggleLED(OFF, group, "scroll_active");
+        Mixage.scrollToggleState[group] = false;
     }
 };
 
 // Disable the adjustment of the loop end or start position with the jogwheel
-MACEA.stopLoopAdjust = function(group, adjustpoint) {
+Mixage.stopLoopAdjust = function(group, adjustpoint) {
     if (adjustpoint === "start" | adjustpoint === undefined) {
-        MACEA.adjustLoopIn[group] = false;
-        MACEA.blinkLED(MACEA.ledMap[group].loop, group, 0);
+        Mixage.adjustLoopIn[group] = false;
+        Mixage.blinkLED(Mixage.ledMap[group].loop, group, 0);
     }
 
     if (adjustpoint === "end" | adjustpoint === undefined) {
-        MACEA.adjustLoopOut[group] = false;
-        MACEA.blinkLED(MACEA.ledMap[group].reloop, group, 0);
+        Mixage.adjustLoopOut[group] = false;
+        Mixage.blinkLED(Mixage.ledMap[group].reloop, group, 0);
     }
 
     if (adjustpoint === undefined) {
-        MACEA.adjustLoop[group] = false;
+        Mixage.adjustLoop[group] = false;
     }
 
-    MACEA.toggleReloopLED(group);
+    Mixage.toggleReloopLED(group);
 };
 
 // Start blinking the LED for a given control based on the time parameter, stops blinking a control light if time is set to zero
 // blinking is syncronized with the "indicator_250millis" control and the time parameter is rounded to the closest
-MACEA.blinkLED = function(control, group, time) {
+Mixage.blinkLED = function(control, group, time) {
 
     // remove any connection that might be present
-    if (Object.prototype.hasOwnProperty.call(MACEA.blinkTimer[group], control)) {
-        MACEA.blinkTimer[group][control].timer.disconnect();
-        delete MACEA.blinkTimer[group][control];
+    if (Object.prototype.hasOwnProperty.call(Mixage.blinkTimer[group], control)) {
+        Mixage.blinkTimer[group][control].timer.disconnect();
+        delete Mixage.blinkTimer[group][control];
         midi.sendShortMsg(0x90, control, OFF);
     }
 
     if (time > 0) { // if a time is given start blinking the led
         var cycles = Math.round(time / 250); //convert time to cycles of 250ms
-        MACEA.blinkTimer[group][control] = {};
-        MACEA.blinkTimer[group][control].toggle = 0;
-        MACEA.blinkTimer[group][control].counter = 0;
+        Mixage.blinkTimer[group][control] = {};
+        Mixage.blinkTimer[group][control].toggle = 0;
+        Mixage.blinkTimer[group][control].counter = 0;
 
-        MACEA.blinkTimer[group][control].timer = engine.makeConnection("[App]", "indicator_250ms", function() {
-            MACEA.blinkTimer[group][control].counter += 1;
+        Mixage.blinkTimer[group][control].timer = engine.makeConnection("[App]", "indicator_250ms", function() {
+            Mixage.blinkTimer[group][control].counter += 1;
 
-            if (MACEA.blinkTimer[group][control].counter === cycles) {
-                MACEA.blinkTimer[group][control].toggle = !MACEA.blinkTimer[group][control].toggle;
-                midi.sendShortMsg(0x90, control, MACEA.blinkTimer[group][control].toggle);
-                MACEA.blinkTimer[group][control].counter = 0;
+            if (Mixage.blinkTimer[group][control].counter === cycles) {
+                Mixage.blinkTimer[group][control].toggle = !Mixage.blinkTimer[group][control].toggle;
+                midi.sendShortMsg(0x90, control, Mixage.blinkTimer[group][control].toggle);
+                Mixage.blinkTimer[group][control].counter = 0;
             }
         });
     }
 };
 
 // Runs every time the focused_effect for a channel is changed either by controller or mixxx
-MACEA.handleFxSelect = function(value, group) {
+Mixage.handleFxSelect = function(value, group) {
     if (value === 0) {
-        MACEA.toggleLED(OFF, group, "fx_sel");
+        Mixage.toggleLED(OFF, group, "fx_sel");
         engine.softTakeoverIgnoreNextValue("[EffectRack1_EffectUnit1]", "super1");
     } else {
-        MACEA.toggleLED(ON, group, "fx_sel");
+        Mixage.toggleLED(ON, group, "fx_sel");
         engine.softTakeoverIgnoreNextValue("[EffectRack1_EffectUnit2_Effect" + value + "]", "meta");
     }
 };
 
 // Callback function for handleTraxPress
 // previews a track on a quick press and maximize/minimize the library on double press
-MACEA.TraxPressCallback = function(_channel, _control, _value, _status, group, event) {
+Mixage.TraxPressCallback = function(_channel, _control, _value, _status, group, event) {
     if (event === QUICK_PRESS) {
         if (engine.getValue("[PreviewDeck1]", "play")) {
             engine.setValue("[PreviewDeck1]", "stop", true);
@@ -393,11 +393,11 @@ MACEA.TraxPressCallback = function(_channel, _control, _value, _status, group, e
     if (event === DOUBLE_PRESS) {
         script.toggleControl(group, "maximize_library");
     }
-    MACEA.traxxPressTimer = 0;
+    Mixage.traxxPressTimer = 0;
 };
 
 // toggles the focussed effect or all effect slots in an effect unit on or off
-MACEA.toggleEffect = function(group) {
+Mixage.toggleEffect = function(group) {
     var unitNr = script.deckFromGroup(group);
     var effectUnit = "EffectRack1_EffectUnit" + unitNr;
     var effectUnitGroup = "["+effectUnit+"]";
@@ -405,17 +405,17 @@ MACEA.toggleEffect = function(group) {
     var enabledFxSlots = [];
 
     if (focusedEffect === 0) {
-        for (var effectSlot = 1; effectSlot <= MACEA.numEffectSlots; effectSlot++) {
+        for (var effectSlot = 1; effectSlot <= Mixage.numEffectSlots; effectSlot++) {
             enabledFxSlots.push(engine.getValue("[" + effectUnit + "_Effect" + effectSlot + "]", "enabled"));
         }
 
         if (enabledFxSlots.indexOf(1) === -1) {
-            MACEA.effectSlotState[effectUnitGroup].map(function(state, effect) {
+            Mixage.effectSlotState[effectUnitGroup].map(function(state, effect) {
                 engine.setValue("[" + effectUnit + "_Effect" + (effect +1) + "]", "enabled", state);
             });
         } else {
-            MACEA.effectSlotState[effectUnitGroup] = enabledFxSlots;
-            for (effectSlot = 1; effectSlot <= MACEA.numEffectSlots; effectSlot++) {
+            Mixage.effectSlotState[effectUnitGroup] = enabledFxSlots;
+            for (effectSlot = 1; effectSlot <= Mixage.numEffectSlots; effectSlot++) {
                 engine.setValue("[" + effectUnit + "_Effect" + effectSlot + "]", "enabled", 0);
             }
         }
@@ -427,12 +427,12 @@ MACEA.toggleEffect = function(group) {
 // ----- functions mapped to buttons -----
 
 // selects the loop in point in loop adjustment mode, otherwise trigger "beatloop_activate"
-MACEA.handleLoop = function(_channel, _control, value, _status, group) {
-    if (MACEA.adjustLoop[group]) { // loop adjustment mode is active
-        if (MACEA.adjustLoopOut[group] && value === DOWN) { // loop out is currently being adjusted, switch to loop in
-            MACEA.startLoopAdjust(group, "start");
-        } else if (MACEA.adjustLoopIn[group] && value === DOWN) { // loop in is currently being adjusted switch to loop in and out
-            MACEA.startLoopAdjust(group);
+Mixage.handleLoop = function(_channel, _control, value, _status, group) {
+    if (Mixage.adjustLoop[group]) { // loop adjustment mode is active
+        if (Mixage.adjustLoopOut[group] && value === DOWN) { // loop out is currently being adjusted, switch to loop in
+            Mixage.startLoopAdjust(group, "start");
+        } else if (Mixage.adjustLoopIn[group] && value === DOWN) { // loop in is currently being adjusted switch to loop in and out
+            Mixage.startLoopAdjust(group);
         }
     } else {
         if (value === DOWN) { // loop adjustment mode is not active
@@ -444,12 +444,12 @@ MACEA.handleLoop = function(_channel, _control, value, _status, group) {
 };
 
 // selects the loop out point in loop adjustment mode, otherwise trigger reloop
-MACEA.handleReloop = function(_channel, _control, value, _status, group) {
-    if (MACEA.adjustLoop[group]) { // loop adjustment mode is active
-        if (MACEA.adjustLoopIn[group] && value === DOWN) { // loop in is currently being adjusted, switch to loop out
-            MACEA.startLoopAdjust(group, "end");
-        } else if (MACEA.adjustLoopOut[group] && value === DOWN) { // loop out is currently being adjusted switch to loop in and out
-            MACEA.startLoopAdjust(group);
+Mixage.handleReloop = function(_channel, _control, value, _status, group) {
+    if (Mixage.adjustLoop[group]) { // loop adjustment mode is active
+        if (Mixage.adjustLoopIn[group] && value === DOWN) { // loop in is currently being adjusted, switch to loop out
+            Mixage.startLoopAdjust(group, "end");
+        } else if (Mixage.adjustLoopOut[group] && value === DOWN) { // loop out is currently being adjusted switch to loop in and out
+            Mixage.startLoopAdjust(group);
         }
     } else {
         if (value === DOWN) { // loop adjustment mode is not active
@@ -461,12 +461,12 @@ MACEA.handleReloop = function(_channel, _control, value, _status, group) {
 };
 
 // set a loop in point if none is defined, otherwise enable adjustment of the start position with the jogwheel
-MACEA.handleLoopIn = function(_channel, _control, value, _status, group) {
-    if (MACEA.adjustLoop[group]) { // loop adjustment mode is active
-        if (MACEA.adjustLoopOut[group] && value === DOWN) { // loop out is currently being adjusted, switch to loop in
-            MACEA.startLoopAdjust(group, "start");
-        } else if (MACEA.adjustLoopIn[group] && value === DOWN) { // loop in is currently being adjusted switch to loop in and out
-            MACEA.startLoopAdjust(group);
+Mixage.handleLoopIn = function(_channel, _control, value, _status, group) {
+    if (Mixage.adjustLoop[group]) { // loop adjustment mode is active
+        if (Mixage.adjustLoopOut[group] && value === DOWN) { // loop out is currently being adjusted, switch to loop in
+            Mixage.startLoopAdjust(group, "start");
+        } else if (Mixage.adjustLoopIn[group] && value === DOWN) { // loop in is currently being adjusted switch to loop in and out
+            Mixage.startLoopAdjust(group);
         }
     } else { // loop adjustment mode is not active
         if (value === DOWN) {
@@ -478,12 +478,12 @@ MACEA.handleLoopIn = function(_channel, _control, value, _status, group) {
 };
 
 // set a loop in point if none is defined, otherwise enable adjustment of the start position with the jogwheel
-MACEA.handleLoopOut = function(_channel, _control, value, _status, group) {
-    if (MACEA.adjustLoop[group]) { // loop adjustment mode is active
-        if (MACEA.adjustLoopIn[group] && value === DOWN) { // loop in is currently being adjusted, switch to loop out
-            MACEA.startLoopAdjust(group, "end");
-        } else if (MACEA.adjustLoopOut[group] && value === DOWN) { // loop out is currently being adjusted switch to loop in and out
-            MACEA.startLoopAdjust(group);
+Mixage.handleLoopOut = function(_channel, _control, value, _status, group) {
+    if (Mixage.adjustLoop[group]) { // loop adjustment mode is active
+        if (Mixage.adjustLoopIn[group] && value === DOWN) { // loop in is currently being adjusted, switch to loop out
+            Mixage.startLoopAdjust(group, "end");
+        } else if (Mixage.adjustLoopOut[group] && value === DOWN) { // loop out is currently being adjusted switch to loop in and out
+            Mixage.startLoopAdjust(group);
         }
     } else {
         if (value === DOWN) { // loop adjustment mode is not active
@@ -496,9 +496,9 @@ MACEA.handleLoopOut = function(_channel, _control, value, _status, group) {
 
 // Toggle play and make sure the preview deck stops when starting to play in a deck
 // brake or softStart a while the scratch toggle button is held
-MACEA.handlePlay = function(_channel, _control, value, _status, group) {
+Mixage.handlePlay = function(_channel, _control, value, _status, group) {
     var deck = script.deckFromGroup(group);
-    if (value === DOWN && MACEA.scratchPressed[group]) { // scratch toggle is pressed
+    if (value === DOWN && Mixage.scratchPressed[group]) { // scratch toggle is pressed
         if (engine.getValue(group, "play") === 0) {
             engine.softStart(deck, true, 1.5);
         } else {
@@ -510,33 +510,33 @@ MACEA.handlePlay = function(_channel, _control, value, _status, group) {
 };
 
 // Checks wether the Traxx button is double pressed
-MACEA.handleTraxPress = function(channel, control, value, status, group) {
+Mixage.handleTraxPress = function(channel, control, value, status, group) {
     if (value === DOWN) {
-        if (MACEA.traxxPressTimer === 0) { // first press
-            MACEA.traxxPressTimer = engine.beginTimer(400, function() {
-                MACEA.TraxPressCallback(channel, control, value, status, group, QUICK_PRESS);
+        if (Mixage.traxxPressTimer === 0) { // first press
+            Mixage.traxxPressTimer = engine.beginTimer(400, function() {
+                Mixage.TraxPressCallback(channel, control, value, status, group, QUICK_PRESS);
             }, true);
         } else { // 2nd press (before timer's out)
-            engine.stopTimer(MACEA.traxxPressTimer);
-            MACEA.TraxPressCallback(channel, control, value, status, group, DOUBLE_PRESS);
+            engine.stopTimer(Mixage.traxxPressTimer);
+            Mixage.TraxPressCallback(channel, control, value, status, group, DOUBLE_PRESS);
         }
     }
 };
 
 // select track when turning the Traxx button
-MACEA.selectTrack = function(_channel, _control, value, _status, _group) {
+Mixage.selectTrack = function(_channel, _control, value, _status, _group) {
     var diff = value - 64; // 0x40 (64) centered control
     engine.setValue("[Playlist]", "SelectTrackKnob", diff);
 };
 
 // select playlist when turning the Traxx button
-MACEA.selectPlaylist = function(_channel, _control, value, _status, _group) {
+Mixage.selectPlaylist = function(_channel, _control, value, _status, _group) {
     var diff = value - 64; // 0x40 (64) centered control
     engine.setValue("[Playlist]", "SelectPlaylist", diff);
 };
 
 // Stops a preview that might be playing and loads the selected track regardless
-MACEA.handleTrackLoading = function(_channel, _control, value, _status, group) {
+Mixage.handleTrackLoading = function(_channel, _control, value, _status, group) {
     if (value === DOWN) {
         engine.setValue("[PreviewDeck1]", "stop", true);
         engine.setValue(group, "LoadSelectedTrack", true);
@@ -544,12 +544,12 @@ MACEA.handleTrackLoading = function(_channel, _control, value, _status, group) {
 };
 
 // Cycle through the effectslots of the effectunit that corresponds to a channel
-MACEA.nextEffect = function(_channel, _control, value, _status, group) {
+Mixage.nextEffect = function(_channel, _control, value, _status, group) {
     var unitNr = script.deckFromGroup(group);
     var controlString = "[EffectRack1_EffectUnit" + unitNr + "]";
     if (value === DOWN) {
-        if (engine.getValue(controlString, "focused_effect") === MACEA.numEffectSlots) { // after cycling through all effectslot go back to the start
-            for (var i = 1; i === MACEA.numEffectSlots; i++) {
+        if (engine.getValue(controlString, "focused_effect") === Mixage.numEffectSlots) { // after cycling through all effectslot go back to the start
+            for (var i = 1; i === Mixage.numEffectSlots; i++) {
                 var groupString = "[EffectRack1_EffectUnit" + unitNr + "_Effect" + i + "]";
                 engine.softTakeoverIgnoreNextValue(groupString, "meta");
             }
@@ -564,11 +564,11 @@ MACEA.nextEffect = function(_channel, _control, value, _status, group) {
 
 // Handle turning of the Dry/Wet nob
 // control the dry/wet when no effect slot is selected else selects the effect for the currently selected effect slot
-MACEA.handleEffectDryWet = function(_channel, _control, value, _status, group) {
+Mixage.handleEffectDryWet = function(_channel, _control, value, _status, group) {
     var unitNr = script.deckFromGroup(group);
     var controlString = "[EffectRack1_EffectUnit" + unitNr + "]";
     var diff = (value - 64); // 0x40 (64) centered control
-    if (MACEA.dryWetPressed[group]) {
+    if (Mixage.dryWetPressed[group]) {
         engine.setValue(controlString, "chain_preset_selector", diff);
     } else if (engine.getValue(controlString, "focused_effect") === 0) { // no effect slot is selected
         var dryWetValue = engine.getValue(controlString, "mix");
@@ -580,24 +580,24 @@ MACEA.handleEffectDryWet = function(_channel, _control, value, _status, group) {
 };
 
 // Turns a currently selected effect slot on, if none are selected all effect slots are turned off
-MACEA.handleDryWetPressed = function(_channel, _control, value, _status, group) {
+Mixage.handleDryWetPressed = function(_channel, _control, value, _status, group) {
     if (value === DOWN) {
-        MACEA.dryWetPressed[group] = true;
-        MACEA.dryWetPressTimer = engine.beginTimer(400, function() {
-            MACEA.dryWetPressTimer = 0;
+        Mixage.dryWetPressed[group] = true;
+        Mixage.dryWetPressTimer = engine.beginTimer(400, function() {
+            Mixage.dryWetPressTimer = 0;
         }, true);
     } else {
-        MACEA.dryWetPressed[group] = false;
-        if (MACEA.dryWetPressTimer !== 0) {
-            engine.stopTimer(MACEA.dryWetPressTimer);
-            MACEA.dryWetPressTimer = 0;
-            MACEA.toggleEffect(group);
+        Mixage.dryWetPressed[group] = false;
+        if (Mixage.dryWetPressTimer !== 0) {
+            engine.stopTimer(Mixage.dryWetPressTimer);
+            Mixage.dryWetPressTimer = 0;
+            Mixage.toggleEffect(group);
         }
     }
 };
 
 // Controls the meta for an effect slot if selected, otherwise controls the meta for an effect unit
-MACEA.handleFxAmount = function(_channel, _control, value, _status, group) {
+Mixage.handleFxAmount = function(_channel, _control, value, _status, group) {
     var unitNr = script.deckFromGroup(group);
     var controlString = "[EffectRack1_EffectUnit" + unitNr + "]";
     var focussedEffect = engine.getValue(controlString, "focused_effect");
@@ -609,18 +609,18 @@ MACEA.handleFxAmount = function(_channel, _control, value, _status, group) {
 };
 
 // Turn off any effect units that are enabled for the channel, if none are enabled enable the corresponding effect unit
-MACEA.handleFxPress = function(_channel, _control, value, _status, group) {
+Mixage.handleFxPress = function(_channel, _control, value, _status, group) {
     if (value === DOWN) {
         var fxChannel = "group_" + group + "_enable";
         var unitNr = script.deckFromGroup(group);
         var enabledFxGroups = [];
 
-        for (var i = 1; i <= MACEA.numEffectUnits; i++) {
+        for (var i = 1; i <= Mixage.numEffectUnits; i++) {
             enabledFxGroups.push(engine.getValue("[EffectRack1_EffectUnit" + i + "]", fxChannel));
         }
 
         if (enabledFxGroups.indexOf(1) !== -1) {
-            for (var effectUnit = 1; effectUnit <= MACEA.numEffectUnits; effectUnit++) {
+            for (var effectUnit = 1; effectUnit <= Mixage.numEffectUnits; effectUnit++) {
                 engine.setValue("[EffectRack1_EffectUnit" + effectUnit + "]", fxChannel, false);
             }
         } else {
@@ -631,12 +631,12 @@ MACEA.handleFxPress = function(_channel, _control, value, _status, group) {
 
 // This function is necessary to allow for soft takeover of the filter amount button
 // see https://github.com/mixxxdj/mixxx/wiki/Midi-Scripting#soft-takeover
-MACEA.handleFilter = function(_channel, _control, value, _status, group) {
+Mixage.handleFilter = function(_channel, _control, value, _status, group) {
     engine.setValue("[QuickEffectRack1_"+ group +"]", "super1", value / 127);
 };
 
 // Handles setting soft takeovers when pressing shift
-MACEA.handleShift = function(_channel, _control, value, _status, group) {
+Mixage.handleShift = function(_channel, _control, value, _status, group) {
     if (value === DOWN) {
         var unitNr = script.deckFromGroup(group);
         engine.softTakeoverIgnoreNextValue("[QuickEffectRack1_"+group+"]", "super1");
@@ -645,56 +645,56 @@ MACEA.handleShift = function(_channel, _control, value, _status, group) {
 };
 
 // The "disc" button that enables/disables scratching
-MACEA.scratchToggle = function(_channel, _control, value, _status, group) {
+Mixage.scratchToggle = function(_channel, _control, value, _status, group) {
     if (value === DOWN) {
-        MACEA.scratchPressed[group] = true;
-        MACEA.scratchTogglePressTimer = engine.beginTimer(400, function() {
-            MACEA.scratchTogglePressTimer = 0;
+        Mixage.scratchPressed[group] = true;
+        Mixage.scratchTogglePressTimer = engine.beginTimer(400, function() {
+            Mixage.scratchTogglePressTimer = 0;
         }, true);
     } else {
-        MACEA.scratchPressed[group] = false;
-        if (MACEA.scratchTogglePressTimer !== 0) {
-            engine.stopTimer(MACEA.scratchTogglePressTimer);
-            MACEA.scratchTogglePressTimer = 0;
-            MACEA.stopLoopAdjust(group);
-            MACEA.scratchToggleState[group] = !MACEA.scratchToggleState[group];
-            MACEA.toggleLED(MACEA.scratchToggleState[group], group, "scratch_active");
-            if (MACEA.scrollToggleState[group]) {
-                MACEA.scrollToggleState[group] = !MACEA.scrollToggleState[group];
-                MACEA.toggleLED(MACEA.scrollToggleState[group], group, "scroll_active");
+        Mixage.scratchPressed[group] = false;
+        if (Mixage.scratchTogglePressTimer !== 0) {
+            engine.stopTimer(Mixage.scratchTogglePressTimer);
+            Mixage.scratchTogglePressTimer = 0;
+            Mixage.stopLoopAdjust(group);
+            Mixage.scratchToggleState[group] = !Mixage.scratchToggleState[group];
+            Mixage.toggleLED(Mixage.scratchToggleState[group], group, "scratch_active");
+            if (Mixage.scrollToggleState[group]) {
+                Mixage.scrollToggleState[group] = !Mixage.scrollToggleState[group];
+                Mixage.toggleLED(Mixage.scrollToggleState[group], group, "scroll_active");
             }
         }
     }
 };
 
 // The "loupe" button that enables/disables track scrolling
-MACEA.scrollToggle = function(_channel, _control, value, _status, group) {
+Mixage.scrollToggle = function(_channel, _control, value, _status, group) {
     if (value === DOWN) {
-        MACEA.stopLoopAdjust(group);
-        MACEA.scrollToggleState[group] = !MACEA.scrollToggleState[group];
-        MACEA.toggleLED(MACEA.scrollToggleState[group], group, "scroll_active");
-        if (MACEA.scratchToggleState[group]) {
-            MACEA.scratchToggleState[group] = !MACEA.scratchToggleState[group];
-            MACEA.toggleLED(MACEA.scratchToggleState[group], group, "scratch_active");
+        Mixage.stopLoopAdjust(group);
+        Mixage.scrollToggleState[group] = !Mixage.scrollToggleState[group];
+        Mixage.toggleLED(Mixage.scrollToggleState[group], group, "scroll_active");
+        if (Mixage.scratchToggleState[group]) {
+            Mixage.scratchToggleState[group] = !Mixage.scratchToggleState[group];
+            Mixage.toggleLED(Mixage.scratchToggleState[group], group, "scratch_active");
         }
     }
 };
 
 // The touch function on the wheels that enables/disables scratching
-MACEA.wheelTouch = function(_channel, _control, value, _status, group) {
+Mixage.wheelTouch = function(_channel, _control, value, _status, group) {
     var unitNr = script.deckFromGroup(group);
 
     if (value === DOWN) {
-        MACEA.wheelTouched[group] = true;
+        Mixage.wheelTouched[group] = true;
     } else {
-        MACEA.wheelTouched[group] = false;
+        Mixage.wheelTouched[group] = false;
     }
 
-    if (MACEA.scratchByWheelTouch || MACEA.scratchToggleState[group]) {
+    if (Mixage.scratchByWheelTouch || Mixage.scratchToggleState[group]) {
         if (value === DOWN) {
             var alpha = 1.0 / 8.0;
             var beta = alpha / 32.0;
-            engine.scratchEnable(unitNr, MACEA.scratchTicksPerRevolution, 33.33, alpha, beta);
+            engine.scratchEnable(unitNr, Mixage.scratchTicksPerRevolution, 33.33, alpha, beta);
         } else {
             engine.scratchDisable(unitNr);
         }
@@ -702,31 +702,31 @@ MACEA.wheelTouch = function(_channel, _control, value, _status, group) {
 };
 
 // The wheel that controls the scratching / jogging
-MACEA.wheelTurn = function(_channel, _control, value, _status, group) {
+Mixage.wheelTurn = function(_channel, _control, value, _status, group) {
     var deckNr = script.deckFromGroup(group);
     var diff = value - 64; // 0x40 (64) centered control
-    if (MACEA.adjustLoop[group]) {  // loop adjustment
+    if (Mixage.adjustLoop[group]) {  // loop adjustment
         // triple the adjustment rate if the top of the jogwheel is being touched
-        var factor = MACEA.wheelTouched[group] ? 100 : 33;
-        if (MACEA.adjustLoopIn[group]) {
+        var factor = Mixage.wheelTouched[group] ? 100 : 33;
+        if (Mixage.adjustLoopIn[group]) {
             var newStartPosition = engine.getValue(group, "loop_start_position") + (diff * factor);
             if (newStartPosition < engine.getValue(group, "loop_end_position")) {
                 engine.setValue(group, "loop_start_position", newStartPosition);
             }
         }
-        if (MACEA.adjustLoopOut[group]) {
+        if (Mixage.adjustLoopOut[group]) {
             var newEndPosition = engine.getValue(group, "loop_end_position") + (diff * factor);
             if (newEndPosition > engine.getValue(group, "loop_start_position")) {
                 engine.setValue(group, "loop_end_position", newEndPosition);
             }
         }
-    } else if (MACEA.scratchByWheelTouch || MACEA.scratchToggleState[group] || MACEA.scrollToggleState[group]) {
-        if (MACEA.scrollToggleState[group]) { // scroll deck
+    } else if (Mixage.scratchByWheelTouch || Mixage.scratchToggleState[group] || Mixage.scrollToggleState[group]) {
+        if (Mixage.scrollToggleState[group]) { // scroll deck
             // triple the scroll rate if the top of the jogwheel is being touched
-            var speedFactor = MACEA.wheelTouched[group] ? 0.00020 : 0.000066;
+            var speedFactor = Mixage.wheelTouched[group] ? 0.00020 : 0.000066;
             var currentPosition = engine.getValue(group, "playposition");
-            engine.setValue(group, "playposition", currentPosition + speedFactor * diff * MACEA.jogWheelScrollSpeed);
-        } else if (MACEA.wheelTouched[group]) {
+            engine.setValue(group, "playposition", currentPosition + speedFactor * diff * Mixage.jogWheelScrollSpeed);
+        } else if (Mixage.wheelTouched[group]) {
             engine.scratchTick(deckNr, diff); // scratch deck
         } else {
             engine.setValue(group, "jog", diff); // pitch bend deck
@@ -735,45 +735,45 @@ MACEA.wheelTurn = function(_channel, _control, value, _status, group) {
 };
 
 // stop or start loop adjustment mode
-MACEA.handleBeatLoopPress = function(_channel, _control, value, _status, group) {
-    if (MACEA.adjustLoop[group] && value === DOWN) {
-        MACEA.stopLoopAdjust(group);
+Mixage.handleBeatLoopPress = function(_channel, _control, value, _status, group) {
+    if (Mixage.adjustLoop[group] && value === DOWN) {
+        Mixage.stopLoopAdjust(group);
     } else if (value === DOWN && engine.getValue(group, "loop_start_position") !== -1 && engine.getValue(group, "loop_end_position") !== -1) {
-        MACEA.adjustLoop[group] = true;
-        MACEA.startLoopAdjust(group);
+        Mixage.adjustLoop[group] = true;
+        Mixage.startLoopAdjust(group);
     }
 };
 
 // move the track or an active loop "beatjump_size" number of beats
-MACEA.handleBeatMove = function(_channel, _control, value, _status, group) {
+Mixage.handleBeatMove = function(_channel, _control, value, _status, group) {
     var beatjumpSize = (value - 64) * engine.getValue(group, "beatjump_size");
     engine.setValue(group, "beatjump", beatjumpSize);
 };
 
 // clears a loop on a short press, set internal variable to true to adjust "beatjump_size"
-MACEA.handleLoopLengthPress = function(_channel, _control, value, _status, group) {
+Mixage.handleLoopLengthPress = function(_channel, _control, value, _status, group) {
     if (value === DOWN) {
-        MACEA.loopLengthPressed[group] = true;
-        MACEA.loopLengthPressTimer = engine.beginTimer(400, function() {
-            MACEA.loopLengthPressTimer = 0;
+        Mixage.loopLengthPressed[group] = true;
+        Mixage.loopLengthPressTimer = engine.beginTimer(400, function() {
+            Mixage.loopLengthPressTimer = 0;
         }, true);
     } else {
-        MACEA.loopLengthPressed[group] = false;
-        if (MACEA.loopLengthPressTimer !== 0) {
-            engine.stopTimer(MACEA.loopLengthPressTimer);
-            MACEA.loopLengthPressTimer = 0;
-            if (MACEA.adjustLoop[group]) {
-                MACEA.stopLoopAdjust(group);
+        Mixage.loopLengthPressed[group] = false;
+        if (Mixage.loopLengthPressTimer !== 0) {
+            engine.stopTimer(Mixage.loopLengthPressTimer);
+            Mixage.loopLengthPressTimer = 0;
+            if (Mixage.adjustLoop[group]) {
+                Mixage.stopLoopAdjust(group);
             }
-            MACEA.clearLoop(_channel, _control, value, _status, group);
+            Mixage.clearLoop(_channel, _control, value, _status, group);
         }
     }
 };
 
 // changes the loop length if Mixage.loopLengthPressed[group] is false otherwise adjusts the "beatjump_size"
-MACEA.handleLoopLength = function(_channel, _control, value, _status, group) {
+Mixage.handleLoopLength = function(_channel, _control, value, _status, group) {
     var diff = (value - 64); // 0x40 (64) centered control
-    if (MACEA.loopLengthPressed[group]) {
+    if (Mixage.loopLengthPressed[group]) {
         var beatjumpSize = engine.getParameter(group, "beatjump_size");
         var newBeatJumpSize = diff > 0 ? 2 * beatjumpSize : beatjumpSize / 2;
         engine.setParameter(group, "beatjump_size", newBeatJumpSize);
