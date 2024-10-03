@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MixxxControllerPreset mixxxVersion="2.0" schemaVersion="1"> <!-- Schema version number to help compatibility, should the MIDI format change -->
     <info>
-        <name>Reloop Mixage CE LTD</name>
-        <author>Adicc</author>
-        <description>This is a Midi Controller Mapping for the Reloop Mixage Controller Edition for Mixxx</description>
-        <wiki>The wiki is not set up yet. Github repo: https://github.com/Adicc/macea_mapping.git</wiki>
-        <forums>Encoded URL to Mixxx discussion forums page for this controller mapping</forums>
+        <name>
+            Reloop Mixage CE LTD
+        </name>
+        <author>
+            Adicc
+        </author>
+        <description>
+            This is a controller Mapping for the "Reloop Mixage CE LTD" controller.
+            Mappings for the Mixage IE already exist, but somehow do not work with my Mixage CE Controller.
+        </description>
+        <wiki>
+        The wiki is not set up yet. Github repo: https://github.com/Adicc/macea_mapping.git
+        </wiki>
+        <forums>
+        There is no forum entry for this mapping yet.
+        However, I found the mapping for the Reloop Mixage IE by Bim here: https://mixxx.discourse.group/t/reloop-mixage-mapping/14779
+        </forums>
     </info>
-    <controller id="controller name"> <!-- Many controllers in one file supported. A controller should only appear once -->
+    <controller id="Reloop MACEA"> <!-- Many controllers in one file supported. A controller should only appear once -->
 
         <controls> <!-- One control group -->
 
