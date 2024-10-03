@@ -390,9 +390,9 @@
             <!-- T33 =  Crossfader  -->
             <control>
                 <group>[Master]</group>
-                <key></key>
-                <status></status> <!-- CC on channel 1 -->
-                <midino></midino>
+                <key>crossfader</key>
+                <status>0xB1</status> <!-- CC on channel 1 -->
+                <midino>0x31</midino>
                 <options>
                     <!-- all control specific options should go here - sensitivity etc. Specifics to be decided by spec -->
                 </options>
